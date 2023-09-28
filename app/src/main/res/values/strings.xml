@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Android Tv</string>
+    <string name="animatedcolor">animatedColor</string>
 </resources>
