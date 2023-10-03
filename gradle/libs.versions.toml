@@ -9,6 +9,7 @@ lifecycle-runtime-ktx = "2.6.2"
 activity-compose = "1.7.2"
 compose-bom = "2023.09.01"
 tvCompose = '1.0.0-alpha09'
+nav_version = '2.7.3'
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -27,6 +28,7 @@ ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tvCompose" }
 tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tvCompose" }
+navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "nav_version" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }

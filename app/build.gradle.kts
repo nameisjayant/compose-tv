@@ -71,4 +71,7 @@ dependencies {
     // tv dependencies
     implementation(libs.tv.foundation)
     implementation(libs.tv.material)
+
+    //navigation
+    implementation(libs.navigation)
 }

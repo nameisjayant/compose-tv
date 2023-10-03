@@ -27,38 +27,50 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.nameisjayant.androidtv.R
 
-data class MenuItem(
-    val id: Int, val item: String, @DrawableRes val icon: Int
-)
-
-val itemList = listOf(
-    MenuItem(
-        1, "Home", R.drawable.baseline_home_24
-    ), MenuItem(
-        2, "Search", R.drawable.baseline_search_24
-    ), MenuItem(
-        3, "Videos", R.drawable.baseline_video_call_24
-    ), MenuItem(
-        4, "Music", R.drawable.baseline_music_note_24
-    )
-)
+enum class MenuItem(val route: String, @DrawableRes val icon: Int) {
+    Home("/home", R.drawable.baseline_home_24),
+    Search("/search", R.drawable.baseline_search_24),
+    Video("/video", R.drawable.baseline_video_call_24),
+    Music("/music", R.drawable.baseline_music_note_24)
+}
 
 
 @Composable
 fun SideDrawerScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController
 ) {
-    var selectedItems by remember { mutableStateOf(itemList[0].id) }
+    val menuItemList = listOf(
+        MenuItem.Home,
+        MenuItem.Search,
+        MenuItem.Video,
+        MenuItem.Music
+    )
+    val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
     NavigationRail(
-        modifier = modifier, containerColor = Color.Black.copy(alpha = 0.3f)
+        modifier = modifier, containerColor = Color.Gray.copy(alpha = 0.4f)
     ) {
-        itemList.forEach {
-            NavigationRow(menuItem = it,
-                isSelected = selectedItems == it.id,
+        menuItemList.forEach { screen ->
+            NavigationRow(menuItem = screen,
+                isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                 onMenuSelected = { item ->
-                    selectedItems = item.id
+                    if (currentDestination?.hierarchy?.any { it.route == screen.route } == true) {
+                    } else {
+                        navHostController.navigate(item.route) {
+                            popUpTo(navHostController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
                 })
         }
     }
